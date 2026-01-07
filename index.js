@@ -4,11 +4,8 @@ const port = process.env.PORT || 3000;
 
 const interval = 25; // sec
 setInterval(() => {
-  console.log(
-    `[${new Date().toISOString()}] Executing second task with ${interval} interval...`
-  );
+  console.log(`Executing task with ${interval}s interval`);
 
-  // Example:
   fetch("https://api.vdovareize.me/track")
     .then((res) => res.json())
     .then((data) => console.log("API Result:", data))
