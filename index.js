@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const interval = 10; // sec
+const interval = 8; // sec
 
 function startTracking() {
   try {
