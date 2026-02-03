@@ -12,10 +12,10 @@ function startTracking() {
     const startTime = Date.now();
     fetch("https://api.vdovareize.me/track")
       .then((res) => res.json())
-      .then((data) => console.log("API Result:", data))
-      .catch((err) => console.error("Fetch error:", err))
+      .then((data) => console.log("Track API Result:", data))
+      .catch((err) => console.error("Track Fetch error:", err))
       .finally(() => {
-        console.log("Response Time:", Date.now() - startTime, "ms");
+        console.log("Track Response Time:", Date.now() - startTime, "ms");
         setTimeout(startTracking, interval * 1000);
       });
   } catch (err) {
@@ -31,10 +31,10 @@ function startDailyTask() {
     const startTime = Date.now();
     fetch("https://api.vdovareize.me/cache/nudge")
       .then((res) => res.json())
-      .then((data) => console.log("API Result:", data))
-      .catch((err) => console.error("Fetch error:", err))
+      .then((data) => console.log("Nudge API Result:", data))
+      .catch((err) => console.error("Nudge Fetch error:", err))
       .finally(() => {
-        console.log("Response Time:", Date.now() - startTime, "ms");
+        console.log("Nudge Response Time:", Date.now() - startTime, "ms");
         setTimeout(startDailyTask, dailyInterval * 1000);
       });
   } catch (err) {
