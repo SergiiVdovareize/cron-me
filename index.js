@@ -5,42 +5,46 @@ const port = process.env.PORT || 3000;
 const interval = 48; // sec
 const dailyInterval = 24 * 60 * 60; // 24 hours
 
-function startTracking() {
-  try {
-    console.log(`Executing task in ${interval}s after previous response.`);
+async function makeApiCall(url, type) {
+  const startTime = Date.now();
+  const apiLogType = `[${type}]`;
+  return new Promise((resolve) => {
+    try {
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => console.log(`${apiLogType} API Result:`, data))
+        .catch((err) => console.error(`${apiLogType} Fetch error:`, err))
+        .finally(() => {
+          console.log(
+            `${apiLogType} Response Time:`,
+            Date.now() - startTime,
+            "ms"
+          );
+          resolve();
+        });
+    } catch (error) {
+      console.error(`${apiLogType} Api error:`, error);
+      resolve();
+    }
+  });
+}
 
-    const startTime = Date.now();
-    fetch("https://api.vdovareize.me/track")
-      .then((res) => res.json())
-      .then((data) => console.log("Track API Result:", data))
-      .catch((err) => console.error("Track Fetch error:", err))
-      .finally(() => {
-        console.log("Track Response Time:", Date.now() - startTime, "ms");
-        setTimeout(startTracking, interval * 1000);
-      });
-  } catch (err) {
-    console.error("Tracking error:", err);
+function startTracking() {
+  console.log(
+    `Executing tracking task in ${interval}s after previous response.`
+  );
+
+  makeApiCall("https://api.vdovareize.me/track", "Track").then(() => {
     setTimeout(startTracking, interval * 1000);
-  }
+  });
 }
 
 function startDailyTask() {
-  try {
-    console.log(`Executing daily nudge task`);
+  console.log(`Executing daily nudge task`);
 
-    const startTime = Date.now();
-    fetch("https://api.vdovareize.me/cache/nudge")
-      .then((res) => res.json())
-      .then((data) => console.log("Nudge API Result:", data))
-      .catch((err) => console.error("Nudge Fetch error:", err))
-      .finally(() => {
-        console.log("Nudge Response Time:", Date.now() - startTime, "ms");
-        setTimeout(startDailyTask, dailyInterval * 1000);
-      });
-  } catch (err) {
-    console.error("Daily task error:", err);
+  makeApiCall("https://api.vdovareize.me/cache/nudge", "Nudge").then(() => {
     setTimeout(startDailyTask, dailyInterval * 1000);
-  }
+  });
 }
 
 startTracking();
