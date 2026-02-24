@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const interval = 48; // sec
+const interval = 100; // sec
 const dailyInterval = 24 * 60 * 60; // 24 hours
 
 async function makeApiCall(url, type) {
